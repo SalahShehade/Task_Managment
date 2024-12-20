@@ -11,7 +11,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@Data
+/**
+ * Implementation of UserDetails to provide user information to Spring Security.
+ */
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,6 +30,12 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    /**
+     * Builds a UserDetailsImpl object from a User entity.
+     *
+     * @param user the User entity
+     * @return UserDetailsImpl object
+     */
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole()));
 
@@ -56,22 +66,22 @@ public class UserDetailsImpl implements UserDetails {
     // The following can be customized as per requirements
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true; // Modify based on your requirements
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return true; // Modify based on your requirements
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return true; // Modify based on your requirements
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; // Modify based on your requirements
     }
 
     @Override
