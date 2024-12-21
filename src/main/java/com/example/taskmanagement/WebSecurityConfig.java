@@ -102,6 +102,9 @@ public class WebSecurityConfig {
                         // Permit all requests to /api/auth/** and /h2-console/**
                         .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
 
+                        // Admin-specific endpoints
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         // Any other request must be authenticated
                         .anyRequest().authenticated())
 

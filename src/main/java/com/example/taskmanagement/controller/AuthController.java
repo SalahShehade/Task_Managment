@@ -1,5 +1,6 @@
 package com.example.taskmanagement.controller;
 
+import com.example.taskmanagement.model.ERole;
 import com.example.taskmanagement.model.User;
 import com.example.taskmanagement.payload.JwtResponse;
 import com.example.taskmanagement.payload.LoginRequest;
@@ -21,6 +22,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -53,12 +56,12 @@ public class AuthController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        // Create new user's account
+        // Create new user's account with ROLE_USER
         User user = User.builder()
                 .username(signUpRequest.getUsername())
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .role("ROLE_USER")
+                .roles(Set.of(ERole.ROLE_USER))
                 .build();
 
         userRepository.save(user);
@@ -67,6 +70,8 @@ public class AuthController {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+
 
     // Corrected Login Endpoint
     @PostMapping("/login")

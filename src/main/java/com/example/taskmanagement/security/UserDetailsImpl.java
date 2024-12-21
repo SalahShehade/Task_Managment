@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of UserDetails to provide user information to Spring Security.
@@ -37,7 +38,9 @@ public class UserDetailsImpl implements UserDetails {
      * @return UserDetailsImpl object
      */
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole()));
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
 
         return UserDetailsImpl.builder()
                 .id(user.getId())
