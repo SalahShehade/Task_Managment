@@ -57,6 +57,15 @@ public class GlobalExceptionHandler {
                 .body(new MessageResponse("Error: " + ex.getMessage()));
     }
 
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<?> handleTokenRefreshException(TokenRefreshException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse("Error: " + ex.getMessage()));
+    }
+
+
+
+
     /**
      * Handles all other exceptions.
      */
@@ -65,4 +74,5 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new MessageResponse("Error: " + ex.getMessage()));
     }
+
 }
