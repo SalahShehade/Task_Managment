@@ -99,6 +99,16 @@ public class WebSecurityConfig {
 
                 // Define authorization rules
                 .authorizeHttpRequests(auth -> auth
+                        // Permit access to Swagger endpoints
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/configuration/**",
+                                "/webjars/**"
+                        ).permitAll()
+
                         // Permit all requests to /api/auth/** and /h2-console/**
                         .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
 

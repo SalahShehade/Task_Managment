@@ -37,6 +37,10 @@ public class UserDetailsImpl implements UserDetails {
      * @param user the User entity
      * @return UserDetailsImpl object
      */
+
+
+
+
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))

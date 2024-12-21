@@ -1,18 +1,37 @@
 package com.example.taskmanagement.payload;
 
+import com.example.taskmanagement.model.Category;
+import com.example.taskmanagement.model.Priority;
+import com.example.taskmanagement.model.Status;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-@Data
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TaskRequest {
+
     @NotBlank(message = "Title is mandatory")
-    @Size(max = 255, message = "Title cannot exceed 255 characters")
     private String title;
 
-    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
     private String description;
 
-    @NotBlank(message = "Status is mandatory")
-    private String status;
+    @NotNull(message = "Status is mandatory")
+    private Status status;
+
+    @NotNull(message = "Priority is mandatory")
+    private Priority priority;
+
+    @NotNull(message = "Category is mandatory")
+    private Category category;
+
+    @NotNull(message = "Due date is mandatory")
+    @FutureOrPresent(message = "Due date must be today or in the future")
+    private LocalDate dueDate;
 }

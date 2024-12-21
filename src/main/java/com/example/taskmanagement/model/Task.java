@@ -1,8 +1,9 @@
 package com.example.taskmanagement.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -20,15 +21,25 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status; // e.g., "Pending", "In Progress", "Completed"
+    private Status status; // Enum: PENDING, IN_PROGRESS, COMPLETED
 
-    // Many-to-One relationship with User
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Priority priority; // Enum: HIGH, MEDIUM, LOW
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category category; // Enum: WORK, PERSONAL, LEARNING, OTHERS
+
+    @Column(name = "due_date", nullable = false)
+    private LocalDate dueDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
     private User user;
 }
