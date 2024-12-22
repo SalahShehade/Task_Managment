@@ -1,8 +1,11 @@
 package com.example.taskmanagement.controller;
 
+import com.example.taskmanagement.model.Priority;
+import com.example.taskmanagement.model.Status;
 import com.example.taskmanagement.model.Task;
 import com.example.taskmanagement.model.User;
 import com.example.taskmanagement.payload.MessageResponse;
+import com.example.taskmanagement.payload.PaginatedResponse;
 import com.example.taskmanagement.payload.TaskRequest;
 import com.example.taskmanagement.payload.TaskResponse;
 import com.example.taskmanagement.service.TaskService;
@@ -12,6 +15,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,12 +64,25 @@ public class TaskController {
         return ResponseEntity.ok(TaskResponse.fromEntity(createdTask));
     }
 
-    // Get all tasks for the authenticated user
-    @Operation(summary = "Get all tasks", description = "Retrieves all tasks for the authenticated user.")
+    // Get all tasks for the authenticated user with search and filtering
+    @Operation(summary = "Get all tasks", description = "Retrieves all tasks for the authenticated user with optional search and filtering.")
     @GetMapping
-    public ResponseEntity<?> getAllTasks(Authentication authentication) {
+    public ResponseEntity<?> getAllTasks(
+            Authentication authentication,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Priority priority,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDateFrom,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDateTo,
+            @RequestParam(defaultValue = "dueDate") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        logger.info("User {} is retrieving all tasks.", userDetails.getUsername());
+        logger.info("User {} is retrieving tasks with filters: title={}, status={}, category={}, priority={}, dueDateFrom={}, dueDateTo={}, sortBy={}, sortDir={}, page={}, size={}",
+                userDetails.getUsername(), title, status, category, priority, dueDateFrom, dueDateTo, sortBy, sortDir, page, size);
 
         Optional<User> userOptional = userRepository.findById(userDetails.getId());
 
@@ -73,14 +92,18 @@ public class TaskController {
         }
 
         User user = userOptional.get();
-        List<TaskResponse> taskResponses = taskService.getAllTasks(user)
+
+        Page<Task> taskPage = taskService.getAllTasks(user, title, status, category, priority, dueDateFrom, dueDateTo, sortBy, sortDir, page, size);
+
+        List<TaskResponse> taskResponses = taskPage.getContent()
                 .stream()
                 .map(TaskResponse::fromEntity)
                 .collect(Collectors.toList());
 
-        logger.info("User {} retrieved {} tasks.", userDetails.getUsername(), taskResponses.size());
+        logger.info("User {} retrieved {} tasks out of total {}", userDetails.getUsername(), taskResponses.size(), taskPage.getTotalElements());
 
-        return ResponseEntity.ok(taskResponses);
+        // Include pagination info in the response if needed
+        return ResponseEntity.ok().body(new PaginatedResponse<>(taskResponses, taskPage.getNumber(), taskPage.getSize(), taskPage.getTotalElements(), taskPage.getTotalPages()));
     }
 
     // Get a specific task by ID
@@ -90,7 +113,7 @@ public class TaskController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         logger.info("User {} is retrieving task with ID {}", userDetails.getUsername(), id);
 
-        Optional<Task> taskOptional = taskService.getTaskById(id);
+        Optional<Task> taskOptional = taskService.getTaskById(id, userRepository.findById(userDetails.getId()).orElse(null));
 
         if (taskOptional.isEmpty()) {
             logger.warn("Task not found: ID {}", id);
@@ -98,12 +121,6 @@ public class TaskController {
         }
 
         Task task = taskOptional.get();
-
-        if (!task.getUser().getId().equals(userDetails.getId())) {
-            logger.warn("User {} attempted to access task {} belonging to user ID {}",
-                    userDetails.getUsername(), id, task.getUser().getId());
-            return ResponseEntity.status(403).body(new MessageResponse("Error: Access denied."));
-        }
 
         return ResponseEntity.ok(TaskResponse.fromEntity(task));
     }

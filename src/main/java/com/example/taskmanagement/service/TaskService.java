@@ -6,9 +6,16 @@ import com.example.taskmanagement.model.Task;
 import com.example.taskmanagement.model.User;
 import com.example.taskmanagement.payload.TaskRequest;
 import com.example.taskmanagement.repository.TaskRepository;
+import com.example.taskmanagement.specification.TaskSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +36,8 @@ public class TaskService {
         Task task = Task.builder()
                 .title(taskRequest.getTitle())
                 .description(taskRequest.getDescription())
-                .status(taskRequest.getStatus())             // Uses enum
-                .priority(taskRequest.getPriority())         // Assuming Priority is an enum
+                .status(taskRequest.getStatus())
+                .priority(taskRequest.getPriority())
                 .category(taskRequest.getCategory())
                 .dueDate(taskRequest.getDueDate())
                 .user(user)
@@ -40,23 +47,63 @@ public class TaskService {
     }
 
     /**
-     * Retrieves all tasks for a specific user.
+     * Retrieves all tasks for a specific user with optional filters.
      *
-     * @param user the user whose tasks are to be retrieved
+     * @param user        the user whose tasks are to be retrieved
+     * @param title       optional title filter
+     * @param status      optional status filter
+     * @param category    optional category filter
+     * @param priority    optional priority filter
+     * @param dueDateFrom optional due date from filter
+     * @param dueDateTo   optional due date to filter
+     * @param sortBy      field to sort by
+     * @param sortDir     sort direction (asc/desc)
+     * @param page        page number for pagination
+     * @param size        page size for pagination
      * @return list of Task entities
      */
-    public List<Task> getAllTasks(User user) {
-        return taskRepository.findByUser(user);
+    public Page<Task> getAllTasks(User user, String title, Status status, String category, Priority priority,
+                                  LocalDate dueDateFrom, LocalDate dueDateTo, String sortBy, String sortDir,
+                                  int page, int size) {
+
+        Specification<Task> spec = Specification.where(TaskSpecifications.hasUser(user));
+
+        if (title != null && !title.isEmpty()) {
+            spec = spec.and(TaskSpecifications.hasTitle(title));
+        }
+        if (status != null) {
+            spec = spec.and(TaskSpecifications.hasStatus(status));
+        }
+        if (category != null && !category.isEmpty()) {
+            spec = spec.and(TaskSpecifications.hasCategory(category));
+        }
+        if (priority != null) {
+            spec = spec.and(TaskSpecifications.hasPriority(priority));
+        }
+        if (dueDateFrom != null && dueDateTo != null) {
+            spec = spec.and(TaskSpecifications.dueDateBetween(dueDateFrom, dueDateTo));
+        }
+
+        // Handle Sorting
+        Sort sort = sortDir.equalsIgnoreCase("desc") ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return taskRepository.findAll(spec, pageable);
     }
 
     /**
-     * Retrieves a task by its ID.
+     * Retrieves a task by its ID if it belongs to the user.
      *
-     * @param id the task ID
-     * @return Optional containing the Task if found
+     * @param id   the task ID
+     * @param user the user requesting the task
+     * @return Optional containing the Task if found and owned by user
      */
-    public Optional<Task> getTaskById(Long id) {
-        return taskRepository.findById(id);
+    public Optional<Task> getTaskById(Long id, User user) {
+        return taskRepository.findById(id)
+                .filter(task -> task.getUser().getId().equals(user.getId()));
     }
 
     /**
@@ -82,8 +129,8 @@ public class TaskService {
 
         existingTask.setTitle(taskRequest.getTitle());
         existingTask.setDescription(taskRequest.getDescription());
-        existingTask.setStatus(taskRequest.getStatus());    // Uses enum
-        existingTask.setPriority(taskRequest.getPriority()); // Uses enum
+        existingTask.setStatus(taskRequest.getStatus());
+        existingTask.setPriority(taskRequest.getPriority());
         existingTask.setCategory(taskRequest.getCategory());
         existingTask.setDueDate(taskRequest.getDueDate());
 
