@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
 @Tag(name = "Task Controller", description = "APIs for managing tasks")
-@SecurityRequirement(name = "bearerAuth") // Applies security scheme globally to this controller
+@SecurityRequirement(name = "bearerAuth")
 public class TaskController {
 
     private final TaskService taskService;

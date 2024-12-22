@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Report Controller", description = "Endpoints for generating task reports")
 @SecurityRequirement(name = "bearerAuth")
+
 public class ReportController {
 
     private static final Logger logger = LoggerFactory.getLogger(ReportController.class);

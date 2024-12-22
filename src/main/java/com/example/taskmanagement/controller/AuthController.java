@@ -9,6 +9,7 @@ import com.example.taskmanagement.repository.UserRepository;
 import com.example.taskmanagement.security.JwtUtils;
 import com.example.taskmanagement.security.UserDetailsImpl;
 import com.example.taskmanagement.service.RefreshTokenService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -32,6 +33,8 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
+
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);

@@ -4,6 +4,7 @@ import com.example.taskmanagement.model.User;
 import com.example.taskmanagement.payload.MessageResponse;
 import com.example.taskmanagement.payload.UserResponse;
 import com.example.taskmanagement.repository.UserRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
+
 public class AdminController {
 
     private final UserRepository userRepository;
