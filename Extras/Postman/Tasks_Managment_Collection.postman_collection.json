@@ -1,0 +1,580 @@
+{
+	"info": {
+		"_postman_id": "bcb84015-855a-4653-b0e0-d348bc336043",
+		"name": "Tasks_Managment_Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40309194"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"testuser1\",\r\n  \"email\": \"testuser@example.com\",\r\n  \"password\": \"Password123!\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"testuser1\",\r\n  \"password\": \"Password123!\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tasks",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3MzQ4MTY1MzcsImV4cCI6MTczNDkwMjkzN30.ZiLy6DU2zHIx9rDxyYuOc7D6LESaY--XedB1MqLggO5TnqXuJi9QQxbuMhP_XOCxDcD1rjj8Hwqw6lEHqi5cbg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Read Spring Documentation\",\r\n  \"description\": \"Thoroughly read and understand the latest Spring Framework documentation.\",\r\n  \"status\": \"COMPLETED\",\r\n  \"priority\": \"LOW\",\r\n  \"category\": \"LEARNING\",\r\n  \"dueDate\": \"2024-12-21\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Tasks",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3MzQ4MTY1MzcsImV4cCI6MTczNDkwMjkzN30.ZiLy6DU2zHIx9rDxyYuOc7D6LESaY--XedB1MqLggO5TnqXuJi9QQxbuMhP_XOCxDcD1rjj8Hwqw6lEHqi5cbg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve task by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3MzQ4MTY1MzcsImV4cCI6MTczNDkwMjkzN30.ZiLy6DU2zHIx9rDxyYuOc7D6LESaY--XedB1MqLggO5TnqXuJi9QQxbuMhP_XOCxDcD1rjj8Hwqw6lEHqi5cbg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/tasks/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an Existing Task",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3MzQ3MTg5NTAsImV4cCI6MTczNDgwNTM1MH0.eKHtoxWgvrlZgKiRVRUIGFVPVu9MkWv6ECjBxlKnMdD1sz7u9TyfA9QzHlJls0w1ET5l94VWbpGjxUtvWGxpZA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Complete Project Report\",\r\n  \"description\": \"Finalize, review, and submit the project report by end of the week.\",\r\n  \"status\": \"In Progress\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tasks/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Task by id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3MzQ3MTg5NTAsImV4cCI6MTczNDgwNTM1MH0.eKHtoxWgvrlZgKiRVRUIGFVPVu9MkWv6ECjBxlKnMdD1sz7u9TyfA9QzHlJls0w1ET5l94VWbpGjxUtvWGxpZA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/tasks/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin1234\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUsers",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNDc3MDI0MiwiZXhwIjoxNzM0ODU2NjQyfQ.Gu5THryS19jZQxiY7lRdWBhWBZMLyjYwmW7rhR9EkkXx7zM3NVo89bQ49rpYscso0-FsVf_PGLr4GYb71uOCog",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete users",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNDc3MDI0MiwiZXhwIjoxNzM0ODU2NjQyfQ.Gu5THryS19jZQxiY7lRdWBhWBZMLyjYwmW7rhR9EkkXx7zM3NVo89bQ49rpYscso0-FsVf_PGLr4GYb71uOCog",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"refreshToken\": \"refresh_token\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"refreshToken\": \"refresh_token\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/refreshtoken",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"refreshtoken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reports summary",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3MzQ4MTM4NjksImV4cCI6MTczNDkwMDI2OX0._5qJ0Ckd-ne7BD9tDt-wHM8-BitbTqZXfZU6aQPhC6W_ArDt1uF_RQQU6C33p2TAnTyHu7Fty95lvwjymKhJuQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/reports/summary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"reports",
+						"summary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reports Categories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE3MzQ4MTUxNTIsImV4cCI6MTczNDkwMTU1Mn0.1FROp2qwFUHN2w6uZdD2r-XJGpJirLvQkvUjaQI2hH-ZfIH4sZxAdCq17ZrRkt7Xg8r1FyZzc2_z0hnIyLjtdw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/reports/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"reports",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search and Filter Tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has paginated structure\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.all.keys(\"content\", \"currentPage\", \"pageSize\", \"totalElements\", \"totalPages\");",
+							"    pm.expect(jsonData.content).to.be.an('array');",
+							"});",
+							"",
+							"pm.test(\"Each task matches the filter criteria\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    jsonData.content.forEach(task => {",
+							"        if (pm.request.url.query.get('title')) {",
+							"            pm.expect(task.title.toLowerCase()).to.include(pm.request.url.query.get('title').toLowerCase());",
+							"        }",
+							"        if (pm.request.url.query.get('status')) {",
+							"            pm.expect(task.status).to.equal(pm.request.url.query.get('status'));",
+							"        }",
+							"        if (pm.request.url.query.get('category')) {",
+							"            pm.expect(task.category).to.equal(pm.request.url.query.get('category'));",
+							"        }",
+							"        if (pm.request.url.query.get('priority')) {",
+							"            pm.expect(task.priority).to.equal(pm.request.url.query.get('priority'));",
+							"        }",
+							"        if (pm.request.url.query.has('dueDateFrom') && pm.request.url.query.has('dueDateTo')) {",
+							"            var dueDate = new Date(task.dueDate);",
+							"            var fromDate = new Date(pm.request.url.query.get('dueDateFrom'));",
+							"            var toDate = new Date(pm.request.url.query.get('dueDateTo'));",
+							"            pm.expect(dueDate).to.be.aboveOrEqual(fromDate);",
+							"            pm.expect(dueDate).to.be.belowOrEqual(toDate);",
+							"        }",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNDg3NDMwMSwiZXhwIjoxNzM0OTYwNzAxfQ.EnAcRmQJ3DQ6stxNWkjjAfmyP4IOExg9ddcG-RvluC0xCVhUE_V2A_pQJzkyBBN6GCjtWEWaS3i2NjpNWx5snQ"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "priority",
+							"value": "HIGH",
+							"disabled": true
+						},
+						{
+							"key": "dueDateFrom",
+							"value": "2024-12-01",
+							"disabled": true
+						},
+						{
+							"key": "dueDateTo",
+							"value": "2024-12-31",
+							"disabled": true
+						},
+						{
+							"key": "sortBy",
+							"value": "dueDate",
+							"disabled": true
+						},
+						{
+							"key": "sortDir",
+							"value": "asc",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "10",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
